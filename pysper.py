@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import whisper
 from pyannote.audio import Pipeline
-from stream_utils import *
+from utils import *
 from tqdm import tqdm
 import psutil
 import time
