@@ -16,16 +16,13 @@ st.text("Upload File")
 
 adjust_cpu_usage()
 psutil.cpu_percent(interval=1, percpu=False)
-device = torch.device("cuda:0")
 
 audio_file = st.file_uploader("Upload Audio", type=["wav", "mp3", "m4a", "mp4", "avi"])
 
 if audio_file is not None:
     asr_model = whisper.load_model("medium")
-    audio_pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token="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").to(device)
-    asr_model = whisper.load_model("medium").to(device)
-    asr_model.to(torch.device("cuda:0"))
-    audio_pipeline.to(torch.device("cuda:0"))
+    audio_pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token="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")
+    asr_model = whisper.load_model("medium")
     st.text("Model Loaded")
 
 if st.sidebar.button("Transcribe Audio"):
