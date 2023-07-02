@@ -125,10 +125,21 @@ def adjust_cpu_usage():
         else:
             break
 
-def convert_audio_to_wav(file_path):
+def convert_audio_to_wav_1(file_path):
     filenaming = file_path.split(".")[0]
     ffmpeg_command = ["ffmpeg", "-i", file_path, "-c:a", "pcm_s16le", "-ar", "44100", "-ac", "2", "-f", "wav", f"{filenaming}.wav"]
     subprocess.run(ffmpeg_command)
+
+def convert_audio_to_wav_2(file_path):
+    filenaming = file_path.split(".")[0]
+    ffmpeg_command = ["ffmpeg", "y", "-i", file_path, "-c:a", "pcm_s16le", "-ar", "44100", "-ac", "2", "-f", "wav", f"{filenaming}.wav"]
+    subprocess.run(ffmpeg_command)
+
+def convert_audio_to_wav(file_path):
+    if os.path.exists(file_path):
+        convert_audio_to_wav_2(file_path)
+    else:
+        convert_audio_to_wav_1(file_path)
 
 def clear_purge():
     gc.collect()
