@@ -10,6 +10,7 @@ import ffmpeg
 import subprocess
 import io
 import ctypes
+import tkinter as tk
 import gc
 
 def has_file():
@@ -37,10 +38,8 @@ def get_text_with_timestamp(asr_result):
 def add_speaker_info_to_text(timestamp_texts, diarization_result):
     spk_text = []
     for seg, text in timestamp_texts:
-        print(seg)
         speaker = diarization_result.crop(seg).argmax()
         spk_text.append((seg, speaker, text))
-        print(speaker)
     return spk_text
 
 
@@ -184,6 +183,16 @@ def clear_cmd():
 def min_console():
     console_handle = ctypes.windll.kernel32.GetConsoleWindow()
     ctypes.windll.user32.ShowWindow(console_handle, 0)
+
+def finish_popup(duration):
+    duration = duration.split(".")[0]
+    popup = tk.Tk()
+    popup.title(f"Transcript Completed.")
+    popup.geometry("350x100")
+    label = tk.Label(popup, text=f"Transcript has Completed Running. Total Time = {duration}")
+    label.pack() 
+    popup.protocol("WM_DELETE_WINDOW", lambda: popup.destroy())
+    popup.mainloop()
 
 def clear_purge():
     gc.collect()
