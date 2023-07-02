@@ -43,7 +43,8 @@ if st.sidebar.button("Transcribe Audio"):
         main = f"{main}.wav"
         st.sidebar.success("Transcribe Audio")
         asr_transcription = asr_model.transcribe(main, verbose=False, language="en")
-        diarization = audio_pipeline(main)
+        for result in tqdm(range(1)):
+            diarization = audio_pipeline(main)
         diarized_text = diarize_and_merge_text(asr_transcription, diarization)
         st.sidebar.success("Transcription Completed")
         for seg, speaker, sentence in tqdm(diarized_text):
