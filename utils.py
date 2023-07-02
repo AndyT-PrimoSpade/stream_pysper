@@ -186,16 +186,6 @@ def min_console():
     console_handle = ctypes.windll.kernel32.GetConsoleWindow()
     ctypes.windll.user32.ShowWindow(console_handle, 0)
 
-def finish_popup(duration):
-    duration = duration.split(".")[0]
-    popup = tk.Tk()
-    popup.title(f"Transcript Completed.")
-    popup.geometry("350x100")
-    label = tk.Label(popup, text=f"Transcript has Completed Running. Total Time = {duration}")
-    label.pack() 
-    popup.protocol("WM_DELETE_WINDOW", lambda: popup.destroy())
-    popup.mainloop()
-
 def clear_purge():
     gc.collect()
     gc.collect(generation=2)
