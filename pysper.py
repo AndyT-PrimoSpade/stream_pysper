@@ -18,7 +18,7 @@ adjust_cpu_usage()
 psutil.cpu_percent(interval=1, percpu=False)
 device = torch.device("cuda:0")
 
-audio_file = st.file_uploader("Upload Audio", type=["wav", "mp3", "m4a", "mp4", "avi", "mpeg"])
+audio_file = st.file_uploader("Upload Audio", type=["wav", "mp3", "m4a", "mp4", "avi"])
 
 if audio_file is not None:
     asr_model = whisper.load_model("medium")
@@ -34,13 +34,16 @@ if st.sidebar.button("Transcribe Audio"):
             f.write(audio_file.getbuffer())
         audiofile_name = audio_file.name
         filetype = ["m4a", "mp3", "mp4", "avi"]
-        for element in filetype:
-            if element in audiofile_name:
-                output_path = convert_audio_to_wav(audiofile_name)
-        if os.path.exists(audiofile_name):
-            os.remove(audiofile_name)
         main = audio_file.name.split(".")[0]
         main = f"{main}.wav"
+        for element in filetype:
+            if element in audiofile_name:
+                if os.path.exists(main):
+                    convert_audio_to_wav_2(audiofile_name)
+                else:
+                    convert_audio_to_wav_1(audiofile_name)
+        if os.path.exists(audiofile_name):
+            os.remove(audiofile_name)
         st.sidebar.success("Transcribe Audio")
         asr_transcription = asr_model.transcribe(main, verbose=False, language="en")
         for result in tqdm(range(1)):
