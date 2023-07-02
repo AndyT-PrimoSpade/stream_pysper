@@ -9,11 +9,12 @@ import time
 import datetime
 import sys
 import torch
+import gc
 
 
 st.title("Pysper")
 
-start = datetime.datetime.now()
+adjust_cpu_usage()
 psutil.cpu_percent(interval=1, percpu=False)
 device = torch.device("cuda:0")
 
@@ -46,6 +47,7 @@ if st.sidebar.button("Transcribe Audio"):
             st.markdown(line)
         if os.path.exists(main):
             os.remove(main)
+        gc.collect()
         torch.cuda.empty_cache()
     else:
         st.sidebar.error("Please upload an audio file")
