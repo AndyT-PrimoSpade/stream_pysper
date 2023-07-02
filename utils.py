@@ -9,8 +9,6 @@ import time
 import ffmpeg
 import subprocess
 import io
-import ctypes
-import tkinter as tk
 import gc
 
 def has_file():
