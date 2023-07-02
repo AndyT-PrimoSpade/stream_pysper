@@ -11,8 +11,8 @@ import sys
 import torch
 import gc
 
-
 st.title("Pysper")
+st.text("Upload File")
 
 adjust_cpu_usage()
 psutil.cpu_percent(interval=1, percpu=False)
