@@ -22,7 +22,7 @@ audio_file = st.file_uploader("Upload Audio", type=["wav", "mp3", "m4a", "mp4", 
 model = whisper.load_model("medium")
 st.text("Model Loaded")
 
-st.text(audio_file)
+main = st.audio(audio_file)
 
 # if audio_file is not None:
 #     asr_model = whisper.load_model("medium")
@@ -36,7 +36,7 @@ main = audio_file.name
 if st.sidebar.button("Transcribe Audio"):
     if audio_file is not None:
         st.sidebar.success("Transcribe Audio")
-        transcription = model.transcribe(audio_file.name)
+        transcription = model.transcribe(main)
         st.sidebar.cuss("Transcription Completed")
         st.markdown(transcription["text"])
         # st.sidebar.success("Transcribe Audio")
