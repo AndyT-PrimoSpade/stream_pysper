@@ -10,3 +10,4 @@ pydub
 tqdm
 psutil
 ffmpeg
+numpy==1.24
