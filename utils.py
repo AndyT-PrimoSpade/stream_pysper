@@ -54,8 +54,7 @@ def merge_sentence(spk_text):
     merged_spk_text = []
     previous_speaker = None
     text_cache = []
-    for seg, speaker, text in spk_text:
-        print(f"{previous_speaker} - {speaker}")      
+    for seg, speaker, text in spk_text:   
         if speaker is None:
             if previous_speaker is not None:    
                 speaker = previous_speaker
@@ -117,48 +116,6 @@ def convert_txt_to_srt(input_file, output_file):
         with io.open(output_file, "a", encoding="utf-8") as output:
             output.write(subtitles)
 
-
-def split_audio(fileName):
-    audio_name = fileName
-    audio_half = audio_name.split(".")[0]
-    audio = AudioSegment.from_file(audio_name)
-
-    duration = len(audio)
-
-    half_point = int(duration / 2)
-    extra_duration = duration % 2
-
-    first_half = audio[:half_point]
-    second_half = audio[half_point + extra_duration:]
-
-    first_half.export(f"../audio/first_half.mp3")
-
-    second_half.export(f"../audio/second_half.mp3")
-
-def combine_txt_file(file1, file2, output):
-    with io.open(file1, "r", encoding="utf-8") as f1:
-        content1 = f1.read()
-    with io.open(file2, "r", encoding="utf-8") as f2:
-        content2 = f2.read()
-    with io.open(output, "w", encoding="utf-8") as f3:
-        f3.write(content1 + content2)
-
-    if __name__ == "__main__":
-        file1 = os.path.join(os.getcwd(), "file1.txt")
-        file2 = os.path.join(os.getcwd(), "file2.txt")
-        output = os.path.join(os.getcwd(), "output.txt")
-
-def whisper_txt_combine(input_1, input_2):    
-    with io.open("../output/whisper1.txt", 'w', encoding="utf-8") as text:
-        text.write(input_1)
-    with io.open("../tput/whisper2.txt", 'w', encoding="utf-8") as text:
-        text.write(input_2)
-    combine_txt_file("../output/whisper1.txt", "../output/whisper2.txt", "../output/whisper.txt")
-    if os.path.exists("../output/whisper1.txt"):
-        os.remove("../output/whisper1.txt")
-    if os.path.exists("../output/whisper2.txt"):
-        os.remove("../output/whisper2.txt")
-
 def adjust_cpu_usage():
     cpu_limit = 20
     while True:
@@ -168,37 +125,17 @@ def adjust_cpu_usage():
         else:
             break
 
-def convert_m4a_to_wav(input_file, output_file):
-    ffmpeg.input(input_file).output(output_file, format='wav').run()
-    print("Conversion Completed!")
-
 def convert_audio_to_wav(file_path):
     filenaming = file_path.split("/")[-1].split(".")[0]
     ffmpeg_command = ["ffmpeg","y", "-i", file_path, "-c:a", "pcm_s16le", "-ar", "44100", "-ac", "2", "-f", "wav", f"../convert/{filenaming}.wav"]
     subprocess.run(ffmpeg_command)
 
-def clear_cmd():
-    os.system("cls")
-
-def min_console():
-    console_handle = ctypes.windll.kernel32.GetConsoleWindow()
-    ctypes.windll.user32.ShowWindow(console_handle, 0)
-
-def finish_popup(duration):
-    duration = duration.split(".")[0]
-    popup = tk.Tk()
-    popup.title(f"Transcript Completed.")
-    popup.geometry("350x100")
-    label = tk.Label(popup, text=f"Transcript has Completed Running. Total Time = {duration}")
-    label.pack() 
-    popup.protocol("WM_DELETE_WINDOW", lambda: popup.destroy())
-    popup.mainloop()
-
 def clear_purge():
     gc.collect()
     gc.collect(generation=2)
 
-# This is to print the result on the console
-# for seg, spk, sent in final_result:
-#     line = f'{seg.start:.2f} {seg.end:.2f} {spk} {sent}'
-#     print(line)
+def convert_time_to_hms(time_in_seconds):
+  time_in_hours = time_in_seconds // 3600
+  time_in_minutes = (time_in_seconds % 3600) // 60
+  time_in_seconds = time_in_seconds % 60
+  return f"{time_in_hours:02d}:{time_in_minutes:02d}:{time_in_seconds:02d}"
